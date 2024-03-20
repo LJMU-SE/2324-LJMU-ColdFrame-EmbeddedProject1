@@ -1,16 +1,7 @@
 #include <Arduino.h>
 #include <DHTesp.h>
 #include <RGBLed.h>
-
-// Stores operating modes
-enum Mode
-{
-    WINTER,
-    GERMINATING,
-    VEGATATIVE,
-    FRUITING,
-    NIGHT
-};
+#include <Modes.h>
 
 // Stores state indicators
 enum State
@@ -18,13 +9,6 @@ enum State
     TOO_HIGH,
     LEVELS_OK,
     TOO_LOW
-};
-
-// Stores sensor ranges
-struct Boundaries
-{
-    int min;
-    int max;
 };
 
 // Soil sensor readings
@@ -49,13 +33,18 @@ public:
     // Updates value and changes state if needed
     virtual void update() = 0;
 
-    // Sets mode and changes boundaries accordingly
+    // Sets mode and changes MinMax accordingly
     virtual void setMode(Mode newMode) = 0;
 
     // Returns current state
     virtual State getStatus()
     {
         return this->status;
+    }
+
+    virtual int getPin()
+    {
+        return this->pin;
     }
 
 protected:
@@ -93,31 +82,9 @@ public:
         }
     }
 
-    // Sets mode and changes boundaries accordingly
     virtual void setMode(Mode newMode) override
     {
-        this->operatingMode = newMode;
-
-        switch (this->operatingMode)
-        {
-        case WINTER:
-            moistureLimit.min = 0;
-            moistureLimit.max = 20;
-            break;
-        case GERMINATING:
-            moistureLimit.min = 0;
-            moistureLimit.max = 60;
-            break;
-        case VEGATATIVE:
-        case FRUITING:
-            moistureLimit.min = 40;
-            moistureLimit.max = 80;
-            break;
-        case NIGHT:
-            moistureLimit.min = 0;
-            moistureLimit.max = 20;
-            break;
-        }
+        this->moistureLimit = newMode.getSoilRange();
     }
 
     int getMoisturePercent()
@@ -126,9 +93,9 @@ public:
     }
 
 protected:
-    Boundaries moistureLimit;
+    MinMax moistureLimit;
     int moistureLevel;
-    int moisturePercent;
+    u_int8_t moisturePercent;
 };
 
 // Child class for DHT sensor
@@ -163,45 +130,12 @@ public:
         }
     }
 
-    // Sets mode and changes boundaries accordingly
-    virtual void setMode(Mode newMode) override
-    {
-        this->operatingMode = newMode;
 
-        switch (this->operatingMode)
-        {
-        case WINTER:
-            this->tempRange.min = 0;
-            this->tempRange.max = 200;
-            this->humidityRange.min = 0;
-            this->humidityRange.max = 200;
-            break;
-        case GERMINATING:
-            this->tempRange.min = 18;
-            this->tempRange.max = 32;
-            this->humidityRange.min = 70;
-            this->humidityRange.max = 95;
-            break;
-        case VEGATATIVE:
-            this->tempRange.min = 20;
-            this->tempRange.max = 25;
-            this->humidityRange.min = 60;
-            this->humidityRange.max = 70;
-            break;
-        case FRUITING:
-            this->tempRange.min = -200;
-            this->tempRange.max = 28;
-            this->humidityRange.min = 40;
-            this->humidityRange.max = 50;
-            break;
-        case NIGHT:
-            this->tempRange.min = 15;
-            this->tempRange.max = 30;
-            this->humidityRange.min = 30;
-            this->humidityRange.max = 80;
-            break;
-        }
+    virtual void setMode(Mode newMode) override {
+        this->humidityRange = newMode.getHumidityRange();
+        this->tempRange = newMode.getTempRange();
     }
+
     int getTemp()
     {
         return this->currentTemp;
@@ -215,8 +149,8 @@ private:
     int currentTemp;
     int currentHumidity;
 
-    Boundaries tempRange;
-    Boundaries humidityRange;
+    MinMax tempRange;
+    MinMax humidityRange;
 };
 
 // Function to state enums to strings
