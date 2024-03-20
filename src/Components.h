@@ -42,6 +42,11 @@ public:
         return this->status;
     }
 
+    virtual int getPin()
+    {
+        return this->pin;
+    }
+
 protected:
     int pin;
     Mode operatingMode;
@@ -89,7 +94,7 @@ public:
 
 protected:
     MinMax moistureLimit;
-    u_int8_t moistureLevel;
+    int moistureLevel;
     u_int8_t moisturePercent;
 };
 
