@@ -1,64 +1,85 @@
-// #ifndef DISPLAYSCREEN_H
-// #define DISPLAYSCREEN_H
+#ifndef DISPLAYSCREEN_H
+#define DISPLAYSCREEN_H
 
-// #define TFT_CS  34
-// #define TFT_RST  35
-// #define TFT_DC   33
+#include <Adafruit_GFX.h>
+#include <Adafruit_ST7735.h>
+#include <Arduino.h>
 
-// #include <Adafruit_GFX.h>
-// #include <Adafruit_ST7735.h>
-
-// // Color definitions
-// #define BLACK    0x0000
-// #define BLUE     0x001F
-// #define RED      0xF800
-// #define GREEN    0x07E0
-// #define CYAN     0x07FF
-// #define MAGENTA  0xF81F
-// #define YELLOW   0xFFE0 
-// #define WHITE    0xFFFF
+#define TFT_CS  27
+#define TFT_RST  14 
+#define TFT_DC   17
+#define TFT_MOSI 23  
+#define TFT_SCLK 15  
 
 
-// class DisplayScreen{
-// public:
+class DisplayScreen{
+public:
 
-//     DisplayScreen() {
-//         this->screen = new Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
-//     }
+    DisplayScreen() {
+        this->screen.initR(INITR_144GREENTAB); 
+        //add default screen
 
-//     void printTo(String text){
-//                 // initialise the display
-//         screen->setFont();
-//         screen->fillScreen(BLACK);
-//         screen->setTextColor(MAGENTA);
-//         screen->setTextSize(1);
+        screen.fillScreen(ST77XX_BLACK);
+        screen.setTextColor(ST77XX_MAGENTA);
+        screen.setTextSize(1);
+
         
-//         // draw punchline
-//         screen->setCursor(0,0);
-//         screen->print(text);
-//         delay(12000);
+        screen.setCursor(0,0);
+        screen.print("Hello, ");
+        screen.println("Hiya!");
 
-//         // home the cursor
-//         screen->setCursor(0,0);
+        Serial.println("started screen");
+        screen.fillScreen(ST77XX_BLACK);
+
+    }
+
+    void updateDisplay(Readings latest){
+                
+        screen.setFont();
+        screen.fillScreen(ST77XX_BLACK);
+        screen.setTextColor(ST77XX_WHITE);
+        screen.setTextSize(1);
+
         
-//         // change the text color to background color
-//         // to erase setup
-//         screen->setTextColor(BLACK);
-//         screen->print(text);
+        screen.setCursor(0,0);
 
-//         // home the cursor
-//         screen->setCursor(0,0);
-//         screen->setTextColor(MAGENTA);
-//         screen->print(text);
+        
+        screen.print("Temp: ");
+        
+        screen.print(latest.temp);
+        
+        screen.println(" C");
+        screen.println("------------------------------------------");
+        screen.print("Humidity: ");
+        
+        screen.print(latest.hum);
+        
+        screen.println(" %");
+        screen.println("------------------------------------------");
+        screen.print("Soil Moisture: ");
+        
+        screen.print(latest.moist);
+        screen.println(" %");
+        screen.println("------------------------------------------");
+        
+        screen.print("Soil state: ");
+        screen.setTextColor(latest.soilState == "Too Low" || latest.soilState == "Too High" ? ST7735_RED : ST7735_GREEN);
+        screen.println(latest.soilState);
+        screen.setTextColor(ST7735_WHITE);
+        screen.print("Env state: ");
+        screen.setTextColor(latest.envState == "Too Low" || latest.envState == "Too High" ? ST7735_RED : ST7735_GREEN);
+        screen.println(latest.envState);
+        screen.setTextColor(ST7735_WHITE);
+        screen.println("---------------------");
 
-//         screen->fillScreen(BLACK);
-//     }
+        
+    }
 
 
-// private:
+private:
 
-// Adafruit_ST7735 * screen;
+Adafruit_ST7735 screen = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
 
-// };
-// #endif 
+};
+#endif 

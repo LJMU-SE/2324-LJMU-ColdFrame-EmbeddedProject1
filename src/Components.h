@@ -162,13 +162,13 @@ String stateToString(State state)
     switch (state)
     {
     case TOO_HIGH:
-        stateToReturn = "TOO HIGH";
+        stateToReturn = "Too High";
         break;
     case LEVELS_OK:
-        stateToReturn = "LEVELS_OK";
+        stateToReturn = "Ok";
         break;
     case TOO_LOW:
-        stateToReturn = "TOO LOW";
+        stateToReturn = "Too Low";
         break;
     }
     return stateToReturn;
