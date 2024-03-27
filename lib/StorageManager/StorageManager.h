@@ -5,6 +5,9 @@
 
 const int ELEMENT_COUNT_MAX = 60 * 24;
 
+unsigned long storageLastChange = 0;
+const long STORAGE_DELAY = 60000;
+
 // Keeps track of debug values
 struct Readings{
   int temp;
@@ -16,6 +19,7 @@ struct Readings{
 
 class StorageManager{
 public:
+
     StorageManager(){ 
         this->currentIndex = 0;
         this->humRange.max = 0;
@@ -25,28 +29,56 @@ public:
         this->storageFull = false;
     }
 
-    void updateBuffer(Readings latest){
+    void update(){
 
-        if (this->currentIndex > ELEMENT_COUNT_MAX){
-            this->currentIndex = 0;
-            this->storageFull = true;
+        unsigned long currentMillis = millis();
+
+        if (currentMillis - storageLastChange >= STORAGE_DELAY)
+        {
+            storageLastChange = currentMillis;
+            
+            if (this->currentIndex > ELEMENT_COUNT_MAX){
+                this->currentIndex = 0;
+                this->storageFull = true;
+            }
+            this->readings[this->currentIndex] = this->lastRead;
+            updateMinMax();
+            this->currentIndex++;
         }
-        this->readings[this->currentIndex] = latest;
-        updateMinMax();
-        this->currentIndex++;
+    }
+
+    void storeLastRead(Readings latest){
+        this->lastRead = latest;
     }
 
     MinMax getMinMaxTemp(){
         return this->tempRange;
     }
+    
     MinMax getMinMaxHum(){
         return this->humRange;
+    }
+
+    bool levelChange(Readings latest){
+
+        if (latest.temp != this->lastRead.temp) 
+            return true;
+        if (latest.hum != this->lastRead.hum) 
+            return true;
+        if (latest.moist != this->lastRead.moist) 
+            return true;
+        if (latest.soilState != this->lastRead.soilState) 
+            return true;    
+        if (latest.envState != this->lastRead.envState) 
+            return true;
+        return false;
     }
 
 
 
 private:
 Readings readings[ELEMENT_COUNT_MAX];
+Readings lastRead;
 MinMax tempRange;
 MinMax humRange;
 uint8_t currentIndex;
