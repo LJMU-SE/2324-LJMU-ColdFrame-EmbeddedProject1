@@ -27,37 +27,34 @@ Mode currentMode;
 // Keeps track of sensors states
 State environmentState;
 State soilState;
-
 Readings readings;
-StorageManager storageManager = StorageManager();  
 
+// Display and storage objects
+StorageManager storageManager = StorageManager();  
 DisplayScreen display;
 
-
-// Delay time between debug string
-const long DEBUG_DELAY = 5000;
+// Delay time between readings
 const long READINGS_DELAY = 2000;
-unsigned long debugLastChange = 0;
 unsigned long readingsLastChange = 0;
 
 
 void setup()
 {
-  // Set initial operating mode and system state
-  currentMode = vegMode;
-  // Initialise serial communication
+
   Serial.begin(115200);
+
   // Construct sensors with starting mode and pin
+  currentMode = vegMode;
   soilSensor.setMode(currentMode);
   dht11.setMode(currentMode);
 
+  // Initialise display
   display = DisplayScreen();
 }
 
 void loop()
 {
 
-  // Get current milliseconds
   unsigned long currentMillis = millis();
 
   if (currentMillis - readingsLastChange >= READINGS_DELAY)
@@ -65,11 +62,8 @@ void loop()
     // Update sensors and check their states
     dht11.update();
     soilSensor.update();
-    
     environmentState = dht11.getStatus();
     soilState = soilSensor.getStatus();
-
-    readingsLastChange = currentMillis;
 
     // Store readings
     readings.temp = dht11.getTemp();
@@ -78,29 +72,17 @@ void loop()
     readings.envState = stateToString(environmentState);
     readings.soilState = stateToString(soilState);
 
+    readingsLastChange = currentMillis;
   }
 
+  // Update LED Status
   realLed.setSystemState(soilState, environmentState);
   realLed.update();
 
-  // Check if delay time has passed
-  if (currentMillis - debugLastChange >= DEBUG_DELAY)
-  {
-    debugLastChange = currentMillis;
-    Serial.printf("Debug String \n");
-    Serial.printf("-------------------------------------------------------------\n");
-    Serial.printf("|| Temperature %d° || Humidity %d%% || Environment State: %s \n", readings.temp, readings.hum, readings.envState);
-    Serial.printf("-------------------------------------------------------------\n");
-    Serial.printf("|| Soil Moisture: %d%% || Soil Moisture State: %s\n", readings.moist, readings.soilState);
-    Serial.printf("-------------------------------------------------------------\n");
-    Serial.println("\n");
+  display.update(readings,&storageManager);
 
-    if (storageManager.levelChange(readings))
-       display.updateDisplay(readings);
-
-    storageManager.storeLastRead(readings);
-    storageManager.update();   
-  }
+  storageManager.storeLastRead(readings);
+  storageManager.update();  
 }
 
 
