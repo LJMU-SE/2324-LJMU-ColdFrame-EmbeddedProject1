@@ -6,7 +6,7 @@
 const int ELEMENT_COUNT_MAX = 60 * 24;
 
 unsigned long storageLastChange = 0;
-const long STORAGE_DELAY = 60000;
+const long STORAGE_DELAY = 6000; //CHANGE BACK TO 60000
 
 // Keeps track of debug values
 struct Readings{

@@ -12,7 +12,7 @@ enum State
 };
 
 // Soil sensor readings
-const int NO_WATER_READING = 2640;
+const int NO_WATER_READING = 2800;
 const int SUBMERGED_READING = 1250;
 
 const long BLINK_RATE = 350;
