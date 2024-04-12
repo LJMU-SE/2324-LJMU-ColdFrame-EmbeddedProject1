@@ -12,7 +12,7 @@ enum State
 };
 
 // Soil sensor readings
-const int NO_WATER_READING = 2640;
+const int NO_WATER_READING = 2800;
 const int SUBMERGED_READING = 1250;
 
 const long BLINK_RATE = 350;
@@ -162,13 +162,13 @@ String stateToString(State state)
     switch (state)
     {
     case TOO_HIGH:
-        stateToReturn = "TOO HIGH";
+        stateToReturn = "Too High";
         break;
     case LEVELS_OK:
-        stateToReturn = "LEVELS_OK";
+        stateToReturn = "Ok";
         break;
     case TOO_LOW:
-        stateToReturn = "TOO LOW";
+        stateToReturn = "Too Low";
         break;
     }
     return stateToReturn;
