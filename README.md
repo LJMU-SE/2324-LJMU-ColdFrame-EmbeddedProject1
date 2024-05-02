@@ -42,4 +42,17 @@ The system features multiple operating modes tailored to various stages of plant
 - **NVM Storage**
 - **Power Management**
 
+### Current Context Diagram
+![Context Diagram GPIO drawio](https://github.com/LJMU-SE/Cold-Frame-Project/assets/150610221/e3b4a970-28ca-4f5b-a8e4-23745fb5ccd7)
+
+
+### Setup Images
+As of 02/05/24
+![PXL_20240206_111237823](https://github.com/LJMU-SE/Cold-Frame-Project/assets/150610221/bbd29e67-a712-4c03-b2b1-7b851eaf7a50)
+![PXL_20240206_111246340 MP](https://github.com/LJMU-SE/Cold-Frame-Project/assets/150610221/1bc5b5a1-7003-4c91-a223-da3ffc775e1e)
+![PXL_20240327_142814390](https://github.com/LJMU-SE/Cold-Frame-Project/assets/150610221/50ae2483-8dfc-4a61-834f-6fdcb3a53ad6)
+
+
+
+
 
