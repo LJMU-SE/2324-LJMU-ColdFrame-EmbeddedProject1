@@ -2,8 +2,6 @@
 
 <img src="https://andersonquigley.com/content/uploads/2022/11/ljmu_logo.png" alt="LJMU Banner Logo" width="100%" />
 
-# Garden Cold Frame Monitoring System
-
 ## Project Objective
 The aim of this project is to develop an embedded system for operating as a garden cold frame monitoring system. 
 
