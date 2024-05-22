@@ -49,7 +49,7 @@ void setup()
   dht11.setMode(currentMode);
 
   // Initialise display
-  display = DisplayScreen();
+  display = DisplayScreen();  
 }
 
 void loop()

@@ -5,13 +5,14 @@
 #include <Adafruit_ST7735.h>
 #include <Arduino.h>
 #include <SPI.h>
+#include <Screen.h>
 
 #define TFT_CS 5
 #define TFT_RST 17  
 #define TFT_DC   14 
 
 enum DisplayState{
-    MAIN_DISPLAY,
+    MAIN_MENU,
     EDIT_MENU
 };
 
@@ -23,32 +24,34 @@ public:
 
     DisplayScreen() {
 
-        this->screen.initR(INITR_144GREENTAB); 
-        screen.fillScreen(ST77XX_BLACK);
-        screen.setTextColor(ST77XX_MAGENTA);
-        screen.setTextSize(2);
-        screen.setCursor(0,0);
-        screen.print("Hello, ");
-        screen.println("Hiya!");
+        this->tftDisplay.initR(INITR_144GREENTAB); 
+        Serial.println("Display Active");
+        tftDisplay.fillScreen(ST77XX_BLACK);
+        this->showing = MAIN_MENU; 
 
-        Serial.println("started screen");
-        screen.fillScreen(ST77XX_BLACK);
-        this->showing = MAIN_DISPLAY;
+        this->screens[0] = new MainMenu();
+        this->screens[1] = new EditMenu(); 
+
     }
 
-    void toggle(){
-        this->showing = this->showing = MAIN_DISPLAY ? EDIT_MENU : MAIN_DISPLAY;
-    }
 
     void update(Readings readings,StorageManager* storageManager){
 
-        if (this->showing == MAIN_DISPLAY){
-            if (storageManager->levelChange(readings))
-            {
-                this->updateDisplay(readings,storageManager);
-            }
+
+        switch(this->showing){
+
+            case MAIN_MENU:
+                this->activeScreen = 0;
+                break;    
+            case EDIT_MENU:
+                this->activeScreen = 1;
+                break;
+
         }
+
+        this->screens[activeScreen]->paint(readings,storageManager,&tftDisplay);
         this->updateTerminal(readings);
+
     }
 
     void updateTerminal(Readings latest){
@@ -68,59 +71,18 @@ public:
         }
     }
 
-    void updateDisplay(Readings latest,StorageManager* storageManager){
-
-        MinMax tempRange = storageManager->getMinMaxTemp();
-        MinMax humRange = storageManager->getMinMaxHum();
-                
-        screen.setFont();
-        screen.fillScreen(ST77XX_BLACK);
-        
-        screen.setTextSize(1);
-        screen.setCursor(0,0);
-        screen.setTextColor(ST77XX_ORANGE);
-        screen.print("* ");
-        screen.setTextColor(ST77XX_WHITE);
-        screen.print("Temp: ");
-        screen.print(latest.temp);
-        screen.println("C");
-        screen.println("------------------------------------------");
-        screen.setTextColor(ST77XX_RED);
-        screen.print("* ");
-        screen.setTextColor(ST77XX_WHITE);
-        screen.print("Humidity: ");
-        screen.print(latest.hum);
-        screen.println("%");
-        screen.println("------------------------------------------");
-        screen.setTextColor(ST77XX_BLUE);
-        screen.print("* ");
-        screen.setTextColor(ST77XX_WHITE);
-        screen.print("Soil Moisture: ");
-        screen.print(latest.moist);
-        screen.println("%");
-        screen.println("------------------------------------------");
-        
-        screen.print("Soil state: ");
-        screen.setTextColor(latest.soilState == "Too Low" || latest.soilState == "Too High" ? ST7735_RED : ST7735_GREEN);
-        screen.println(latest.soilState);
-        screen.setTextColor(ST7735_WHITE);
-        screen.print("Env state: ");
-        screen.setTextColor(latest.envState == "Too Low" || latest.envState == "Too High" ? ST7735_RED : ST7735_GREEN);
-        screen.println(latest.envState);
-        screen.setTextColor(ST7735_WHITE);
-        screen.println("---------------------");
-        screen.setTextColor(ST7735_GREEN);
-        screen.println("24hr Ranges");
-        screen.setTextColor(ST7735_WHITE);
-        screen.println("---------------------");
-        screen.printf("Temp Range: %dC-%dC\n",tempRange.min,tempRange.max);
-        screen.printf("Hum Range: %d-%d%%",humRange.min,humRange.max);
-    }
-
+    
 private:
 
-Adafruit_ST7735 screen = Adafruit_ST7735(TFT_CS, TFT_DC,TFT_RST);
+Adafruit_ST7735 tftDisplay = Adafruit_ST7735(TFT_CS, TFT_DC,TFT_RST);
 DisplayState showing;
+
+// Array of pointers to abstract objects 
+Screen* screens[2];
+u_int8_t activeScreen;
+
+
+// array of pointers to abstracts
 
 };
 #endif 
