@@ -51,5 +51,9 @@ public:
     {
         return this->moistureLevel;
     }
+
+    ModeType getModeType(){
+        return this->type;
+    }
 };
 #endif 

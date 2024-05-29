@@ -29,7 +29,7 @@ public:
         this->storageFull = false;
     }
 
-    void update(){
+    void tick(){
 
         unsigned long currentMillis = millis();
 
@@ -58,23 +58,6 @@ public:
     MinMax getMinMaxHum(){
         return this->humRange;
     }
-
-    bool levelChange(Readings latest){
-
-        if (latest.temp != this->lastRead.temp) 
-            return true;
-        if (latest.hum != this->lastRead.hum) 
-            return true;
-        if (latest.moist != this->lastRead.moist) 
-            return true;
-        if (latest.soilState != this->lastRead.soilState) 
-            return true;    
-        if (latest.envState != this->lastRead.envState) 
-            return true;
-        return false;
-    }
-
-
 
 private:
 Readings readings[ELEMENT_COUNT_MAX];
