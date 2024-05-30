@@ -33,7 +33,11 @@ The system features multiple operating modes tailored to various stages of plant
 #### Mode Selection
 - Through the use of a rotary encoder, the user is now able to change the operating mode of the system.
 - Display has been updated to show value states using colour indicators , with values being printed in red if they are out of the defined range of the current operating mode, and green if they are within.
-https://github.com/LJMU-SE/cold-frame-project/assets/150610221/10573122-edf9-46a4-88ae-5770d3049163
+
+
+https://github.com/LJMU-SE/cold-frame-project/assets/150610221/343fb669-dabe-4b0e-a036-9ad7c4bdfc85
+
+
 
  
 ### Features Not Yet Implemented
@@ -47,9 +51,10 @@ https://github.com/LJMU-SE/cold-frame-project/assets/150610221/10573122-edf9-46a
 
 ### Setup Images
 As of 02/05/24
-![PXL_20240206_111237823](https://github.com/LJMU-SE/Cold-Frame-Project/assets/150610221/bbd29e67-a712-4c03-b2b1-7b851eaf7a50)
-![PXL_20240206_111246340 MP](https://github.com/LJMU-SE/Cold-Frame-Project/assets/150610221/1bc5b5a1-7003-4c91-a223-da3ffc775e1e)
 ![PXL_20240327_142814390](https://github.com/LJMU-SE/Cold-Frame-Project/assets/150610221/50ae2483-8dfc-4a61-834f-6fdcb3a53ad6)
+
+As of 30/05/24
+![PXL_20240530_111212887](https://github.com/LJMU-SE/cold-frame-project/assets/150610221/cd6fbb14-c595-46ea-913f-c4c3936e561b)
 
 
 
