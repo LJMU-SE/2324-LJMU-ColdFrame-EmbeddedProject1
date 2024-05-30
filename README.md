@@ -30,8 +30,13 @@ The system features multiple operating modes tailored to various stages of plant
 - Integrated output display screen that reports current sensor values and statuses.
 - Displays minimum and maximum temperature/humidity over the last 24 hours.
 
+#### Mode Selection
+- Through the use of a rotary encoder, the user is now able to change the operating mode of the system.
+- Display has been updated to show value states using colour indicators , with values being printed in red if they are out of the defined range of the current operating mode, and green if they are within.
+https://github.com/LJMU-SE/cold-frame-project/assets/150610221/10573122-edf9-46a4-88ae-5770d3049163
+
+ 
 ### Features Not Yet Implemented
-- **Mode Selection**
 - **User Editable Mode**
 - **Responsive HVAC Control**
 - **Remote Storage**
@@ -39,10 +44,6 @@ The system features multiple operating modes tailored to various stages of plant
 - **Remote Control and OTA Updates**
 - **NVM Storage**
 - **Power Management**
-
-### Current Context Diagram
-![Context Diagram GPIO drawio](https://github.com/LJMU-SE/Cold-Frame-Project/assets/150610221/e3b4a970-28ca-4f5b-a8e4-23745fb5ccd7)
-
 
 ### Setup Images
 As of 02/05/24
