@@ -34,7 +34,7 @@ public:
     virtual void update() = 0;
 
     // Sets mode and changes MinMax accordingly
-    virtual void setMode(Mode newMode) = 0;
+    virtual void setMode(Mode* newMode) = 0;
 
     // Returns current state
     virtual State getStatus()
@@ -82,9 +82,9 @@ public:
         }
     }
 
-    virtual void setMode(Mode newMode) override
+    virtual void setMode(Mode* newMode) override
     {
-        this->moistureLimit = newMode.getSoilRange();
+        this->moistureLimit = newMode->getSoilRange();
     }
 
     int getMoisturePercent()
@@ -131,9 +131,9 @@ public:
     }
 
 
-    virtual void setMode(Mode newMode) override {
-        this->humidityRange = newMode.getHumidityRange();
-        this->tempRange = newMode.getTempRange();
+    virtual void setMode(Mode* newMode) override {
+        this->humidityRange = newMode->getHumidityRange();
+        this->tempRange = newMode->getTempRange();
     }
 
     int getTemp()
@@ -194,6 +194,8 @@ public:
     {
         this->soilState = soilState;
         this->envState = envState;
+        
+        this->update();
     }
 
     void update()
