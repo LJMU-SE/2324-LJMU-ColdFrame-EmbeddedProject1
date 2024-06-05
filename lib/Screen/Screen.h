@@ -372,7 +372,7 @@ public:
 
         if (scrollDue){
 
-            if (!valueSelected){ // Cycle options 
+            if (!valueSelected){  // Cycle options 
 
                 this->currentFocusIndex += direction;
                 this->updatedRequired = true;
@@ -384,6 +384,7 @@ public:
                 scrollDue = false;
             }
             else {
+                
                 // Iterate value logic 
                 switch(selectedValueIndex){
                     case 0:

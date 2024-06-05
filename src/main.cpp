@@ -37,8 +37,6 @@ ModeManager modeManager = ModeManager();
 StorageManager storageManager = StorageManager(&modeManager);
 DisplayScreen* display;
 
-
-
 // Delay time between readings
 const long READINGS_DELAY = 2000;
 unsigned long readingsLastChange = 0;
