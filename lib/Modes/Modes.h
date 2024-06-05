@@ -2,14 +2,14 @@
 #define MODES_H
 
 // Stores operating modes
-enum class ModeType
+enum ModeType
 {
     WINTER,
     GERMINATING,
     VEGATATIVE,
     FRUITING,
     NIGHT,
-    NULLMODE
+    CUSTOM
 };
 
 // Stores sensor ranges
@@ -35,7 +35,7 @@ public:
         this->moistureLevel.min = soilMin;
         this->moistureLevel.max = soilMax;
     }
-    Mode() : Mode(ModeType::NULLMODE, -1, -1, -1, -1, -1, -1) {}
+    Mode() : Mode(ModeType::CUSTOM, -1, -1, -1, -1, -1, -1) {}
 
     MinMax getTempRange()
     {
@@ -45,6 +45,37 @@ public:
     MinMax getHumidityRange()
     {
         return this->humidityRange;
+    }
+
+    void setTempRange(MinMax _tempRange){
+
+        _tempRange.min = constrain(_tempRange.min,0,40);
+        _tempRange.max = constrain(_tempRange.max,0,40);
+
+        if (_tempRange.min > _tempRange.max){
+            _tempRange.min = _tempRange.max;
+        }
+        if (_tempRange.max < _tempRange.min){
+            _tempRange.max = _tempRange.min;
+        }
+
+        this->tempRange = _tempRange;
+    }
+    void setHumRange(MinMax _humRange){
+
+        _humRange.min = constrain(_humRange.min,0,100);
+        _humRange.max = constrain(_humRange.max,0,100);
+
+        if (_humRange.min > _humRange.max){
+            _humRange.min = _humRange.max;
+        }
+        if (_humRange.max < _humRange.min){
+            _humRange.max = _humRange.min;
+        }
+        this->humidityRange = _humRange;
+    }
+    void setSoilRange(MinMax _soilRange){
+        this->moistureLevel = _soilRange;
     }
 
     MinMax getSoilRange()

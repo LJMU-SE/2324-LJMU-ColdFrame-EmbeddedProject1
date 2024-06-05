@@ -15,31 +15,22 @@ public:
           this->encoder.setCount(0);
           this->buttonPin =  button; 
           pinMode(button, INPUT_PULLUP);
-
-
-    }
-
-    void setBoundaries(int min, int max){
-
-        this->rotation.min = min;
-        this->rotation.max = max;
     }
 
     void update(){
 
         prevPosition = currentPosition;
 
-        long newPosition = abs(encoder.getCount() / 2);
+        long newPosition = encoder.getCount() / 2;
 
-        if (newPosition > this->rotation.max)
-            newPosition =  this->rotation.max;
-        else if (newPosition <  this->rotation.min)
-            newPosition = this->rotation.min;
+        // if (newPosition > this->rotation.max)
+        //     newPosition =  this->rotation.max;
+        // else if (newPosition <  this->rotation.min)
+        //     newPosition = this->rotation.min;
 
         if (newPosition != this->currentPosition)
         {
             currentPosition = newPosition;
-            Serial.println(newPosition);
         }
 
         if (digitalRead(this->buttonPin) == LOW)
@@ -56,12 +47,21 @@ public:
         return this->buttonPressed;
     }
 
-    int poll(){
-        return this->currentPosition;
+    bool scroll(){
+        return currentPosition != prevPosition; 
     }
 
-    bool scroll(){
-        return currentPosition != prevPosition; // change to return direction -1 for back , 1 for forward , 0 for no action??
+    int getDirection(){
+
+        int dir = 0;
+
+        if (currentPosition > prevPosition){
+            dir = -1;
+        }
+        if (currentPosition < prevPosition){
+            dir = 1;
+        }
+        return dir;
     }
 
 

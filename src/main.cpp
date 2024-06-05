@@ -33,10 +33,11 @@ State soilState;
 Readings readings;
 
 // Display and storage objects
-StorageManager storageManager = StorageManager();
+ModeManager modeManager = ModeManager();
+StorageManager storageManager = StorageManager(&modeManager);
 DisplayScreen* display;
 
-ModeManager modeManager = ModeManager();
+
 
 // Delay time between readings
 const long READINGS_DELAY = 2000;
@@ -48,10 +49,7 @@ void setup()
   Serial.begin(115200);
 
   // Initialise display with a reference to encoder to drive menu changes
-  display = new DisplayScreen(&numericalControl,&modeManager);
-
-  // Set default range for control
-  numericalControl.setBoundaries(0,100);
+  display = new DisplayScreen(&numericalControl);
 
 }
 
