@@ -15,7 +15,7 @@ The system features multiple operating modes tailored to various stages of plant
 - **Vegetative**
 - **Fruiting**
 - **Night**
-- **User Editable Mode** (Not yet implemented)
+- **User Editable Mode** 
 
 ## Features
 
@@ -30,9 +30,18 @@ The system features multiple operating modes tailored to various stages of plant
 - Integrated output display screen that reports current sensor values and statuses.
 - Displays minimum and maximum temperature/humidity over the last 24 hours.
 
+#### Mode Selection
+- Through the use of a rotary encoder, the user is now able to change the operating mode of the system.
+- Display has been updated to show value states using colour indicators , with values being printed in red if they are out of the defined range of the current operating mode, and green if they are within.
+
+https://github.com/LJMU-SE/cold-frame-project/assets/150610221/343fb669-dabe-4b0e-a036-9ad7c4bdfc85
+
+#### Custom User Mode
+ - User is now able to create their custom operating mode and select it in the mode list.
+ - Double buffering has now been added for a smoother display, eliminating flickering when the screen updates.
+
+ 
 ### Features Not Yet Implemented
-- **Mode Selection**
-- **User Editable Mode**
 - **Responsive HVAC Control**
 - **Remote Storage**
 - **Alerts**
@@ -40,15 +49,13 @@ The system features multiple operating modes tailored to various stages of plant
 - **NVM Storage**
 - **Power Management**
 
-### Current Context Diagram
-![Context Diagram GPIO drawio](https://github.com/LJMU-SE/Cold-Frame-Project/assets/150610221/e3b4a970-28ca-4f5b-a8e4-23745fb5ccd7)
-
-
 ### Setup Images
 As of 02/05/24
-![PXL_20240206_111237823](https://github.com/LJMU-SE/Cold-Frame-Project/assets/150610221/bbd29e67-a712-4c03-b2b1-7b851eaf7a50)
-![PXL_20240206_111246340 MP](https://github.com/LJMU-SE/Cold-Frame-Project/assets/150610221/1bc5b5a1-7003-4c91-a223-da3ffc775e1e)
 ![PXL_20240327_142814390](https://github.com/LJMU-SE/Cold-Frame-Project/assets/150610221/50ae2483-8dfc-4a61-834f-6fdcb3a53ad6)
+
+As of 30/05/24
+![PXL_20240530_111212887](https://github.com/LJMU-SE/cold-frame-project/assets/150610221/cd6fbb14-c595-46ea-913f-c4c3936e561b)
+
 
 
 
