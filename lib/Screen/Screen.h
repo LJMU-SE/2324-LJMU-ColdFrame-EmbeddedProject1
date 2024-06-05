@@ -287,7 +287,6 @@ protected:
 
     String menuOptions[7]; 
 
-
     int decideColour(int index)
     {
         if (index == currentFocusIndex)
