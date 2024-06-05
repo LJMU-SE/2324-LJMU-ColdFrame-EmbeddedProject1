@@ -15,7 +15,7 @@ The system features multiple operating modes tailored to various stages of plant
 - **Vegetative**
 - **Fruiting**
 - **Night**
-- **User Editable Mode** (Not yet implemented)
+- **User Editable Mode** 
 
 ## Features
 
@@ -34,14 +34,14 @@ The system features multiple operating modes tailored to various stages of plant
 - Through the use of a rotary encoder, the user is now able to change the operating mode of the system.
 - Display has been updated to show value states using colour indicators , with values being printed in red if they are out of the defined range of the current operating mode, and green if they are within.
 
-
 https://github.com/LJMU-SE/cold-frame-project/assets/150610221/343fb669-dabe-4b0e-a036-9ad7c4bdfc85
 
-
+#### Custom User Mode
+ - User is now able to create their custom operating mode and select it in the mode list.
+ - Double buffering has now been added for a smoother display, eliminating flickering when the screen updates.
 
  
 ### Features Not Yet Implemented
-- **User Editable Mode**
 - **Responsive HVAC Control**
 - **Remote Storage**
 - **Alerts**
@@ -55,6 +55,7 @@ As of 02/05/24
 
 As of 30/05/24
 ![PXL_20240530_111212887](https://github.com/LJMU-SE/cold-frame-project/assets/150610221/cd6fbb14-c595-46ea-913f-c4c3936e561b)
+
 
 
 
