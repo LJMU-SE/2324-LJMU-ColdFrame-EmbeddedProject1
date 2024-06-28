@@ -3,9 +3,10 @@
 #include <DisplayScreen.h>
 #include <NumericalControl.h>
 #include <ModeManager.h>
+#include <OnlineStorage.h>
 
 // Initialise sensor objects and pins
-int soilPin = 26;
+int soilPin = 33;
 int dhtPin = 16;
 Enviroment dht11(dhtPin);
 SoilSensor soilSensor(soilPin);
@@ -18,7 +19,7 @@ SoilSensor soilSensor(soilPin);
 NumericalControl numericalControl(ENCODER_CLK,ENCODER_DT,ENCODER_BUTTON);
 
 // Led pins
-int redPin = 18;
+int redPin = 15;
 int greenPin = 4;
 int bluePin = 13;
 RGBLed led(redPin, greenPin, bluePin, RGBLed::COMMON_CATHODE);
@@ -37,6 +38,8 @@ ModeManager modeManager = ModeManager();
 StorageManager storageManager = StorageManager(&modeManager);
 DisplayScreen* display;
 
+OnlineStorage* onlineStorage;
+
 // Delay time between readings
 const long READINGS_DELAY = 2000;
 unsigned long readingsLastChange = 0;
@@ -49,6 +52,7 @@ void setup()
   // Initialise display with a reference to encoder to drive menu changes
   display = new DisplayScreen(&numericalControl);
 
+  onlineStorage = new OnlineStorage("espWifi","ljmu1111");
 }
 
 void loop()
@@ -75,7 +79,10 @@ void loop()
     readings.envState = stateToString(environmentState);
     readings.soilState = stateToString(soilState);
 
+    onlineStorage->tick(readings,currentMode);
+
     readingsLastChange = currentMillis;
+
   }
 
   // Update LED Status

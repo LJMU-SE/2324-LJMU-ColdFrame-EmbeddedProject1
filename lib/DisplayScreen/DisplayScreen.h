@@ -126,10 +126,12 @@ public:
         // Compare current button state to previous
         if (wasPressed != isPressed)
         {
+            Serial.println("press changed");
             wasPressed = isPressed;
-            if (isPressed)
+            if (isPressed) 
                 processButtonPress(storageManager); // Handles system navigation and change presses
-                this->screens[this->showing]->setButtonStatus(isPressed); // Handles changes unique to screen object
+            this->screens[this->showing]->setButtonStatus(isPressed); // Handles changes unique to screen object
+            
 
         }
 

@@ -12,6 +12,8 @@ enum ModeType
     CUSTOM
 };
 
+String modes[] = {"Winter", "Germinating", "Vegatative", "Fruiting", "Night", "Custom"};
+
 // Stores sensor ranges
 struct MinMax
 {
@@ -85,6 +87,10 @@ public:
 
     ModeType getModeType(){
         return this->type;
+    }
+
+    String getModeString(){
+        return modes[this->type];
     }
 };
 #endif 

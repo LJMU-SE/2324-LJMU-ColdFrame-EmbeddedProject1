@@ -2,36 +2,41 @@
 #define SCREEN_H
 #include <DisplayScreen.h>
 
-
 // Parent class
 class Screen
 {
 public:
     Screen() {}
 
-    virtual void paint(Adafruit_ST7735 *tftDisplay,GFXcanvas16* canvas) = 0;
+    virtual void paint(Adafruit_ST7735 *tftDisplay, GFXcanvas16 *canvas) = 0;
     virtual void updateValues(Readings latest, StorageManager *storageManager) = 0;
 
-    virtual void setScrollStatus(bool action){
+    virtual void setScrollStatus(bool action)
+    {
         scrollDue = action;
     }
 
-    virtual void setButtonStatus(bool action){
+    virtual void setButtonStatus(bool action)
+    {
         buttonPress = action;
     }
 
-    virtual void reset(Adafruit_ST7735 *tftDisplay,GFXcanvas16* canvas){
-       updatedRequired = true;
-       this->paint(tftDisplay,canvas);
+    virtual void reset(Adafruit_ST7735 *tftDisplay, GFXcanvas16 *canvas)
+    {
+        updatedRequired = true;
+        this->paint(tftDisplay, canvas);
     }
 
-    virtual void setDirection(int dir){
+    virtual void setDirection(int dir)
+    {
         this->direction = dir;
     }
 
-    virtual int selectOption(){
+    virtual int selectOption()
+    {
 
-        if (this->currentFocusIndex >= this->numOptions - 1){
+        if (this->currentFocusIndex >= this->numOptions - 1)
+        {
             return -1;
         }
         return this->currentFocusIndex;
@@ -81,15 +86,14 @@ public:
         return false;
     }
 
-    virtual void paint(Adafruit_ST7735 *tftDisplay,GFXcanvas16* canvas) override
-    {        
+    virtual void paint(Adafruit_ST7735 *tftDisplay, GFXcanvas16 *canvas) override
+    {
 
         if (!updatedRequired)
         {
             return;
         }
 
-        Serial.println("Repainting screen");
         canvas->setFont();
         canvas->fillScreen(ST77XX_BLACK);
 
@@ -102,12 +106,14 @@ public:
         canvas->println("---------------------");
 
         canvas->setTextColor(ST77XX_ORANGE);
+        canvas->println();
         canvas->print("* ");
         canvas->setTextColor(ST77XX_WHITE);
         canvas->print("Temp: ");
         canvas->setTextColor(currentValues.envState == "Too Low" || currentValues.envState == "Too High" ? ST7735_RED : ST7735_GREEN);
         canvas->print(currentValues.temp);
         canvas->println("C");
+        canvas->println();
         canvas->setTextColor(ST77XX_RED);
         canvas->print("* ");
         canvas->setTextColor(ST77XX_WHITE);
@@ -115,6 +121,7 @@ public:
         canvas->setTextColor(currentValues.envState == "Too Low" || currentValues.envState == "Too High" ? ST7735_RED : ST7735_GREEN);
         canvas->print(currentValues.hum);
         canvas->println("%");
+        canvas->println();
         canvas->setTextColor(ST77XX_BLUE);
         canvas->print("* ");
         canvas->setTextColor(ST77XX_WHITE);
@@ -122,6 +129,7 @@ public:
         canvas->setTextColor(currentValues.soilState == "Too Low" || currentValues.soilState == "Too High" ? ST7735_RED : ST7735_GREEN);
         canvas->print(currentValues.moist);
         canvas->println("%");
+        canvas->println();
 
         canvas->setTextColor(ST7735_WHITE);
         canvas->println("---------------------");
@@ -130,6 +138,7 @@ public:
         canvas->setTextColor(ST7735_WHITE);
         canvas->println("---------------------");
         canvas->printf("Temp: %dC - %dC\n", tempRange.min, tempRange.max);
+        canvas->println();
         canvas->printf("Hum: %d - %d%%", humRange.min, humRange.max);
 
         tftDisplay->drawRGBBitmap(0, 0, canvas->getBuffer(), canvas->width(), canvas->height());
@@ -156,26 +165,26 @@ public:
         this->menuOptions[2] = "Go Back\n";
 
         this->numOptions = 3;
-
     }
 
     virtual void updateValues(Readings latest, StorageManager *storageManager)
-    {   
-          
-            if (scrollDue){
-                this->updatedRequired = true;
-                currentFocusIndex += this->direction;
+    {
 
-                if(currentFocusIndex >= this->numOptions || currentFocusIndex < 0){
-                    currentFocusIndex = 0;
-                }
-              
-                scrollDue = false;
+        if (scrollDue)
+        {
+            this->updatedRequired = true;
+            currentFocusIndex += this->direction;
+
+            if (currentFocusIndex >= this->numOptions || currentFocusIndex < 0)
+            {
+                currentFocusIndex = 0;
             }
+
+            scrollDue = false;
+        }
     }
 
-
-    virtual void paint(Adafruit_ST7735 *tftDisplay,GFXcanvas16* canvas) override
+    virtual void paint(Adafruit_ST7735 *tftDisplay, GFXcanvas16 *canvas) override
     {
 
         if (!updatedRequired)
@@ -204,8 +213,7 @@ public:
     }
 
 protected:
-    
-    String menuOptions[3]; 
+    String menuOptions[3];
 
     int decideColour(int index)
     {
@@ -236,26 +244,27 @@ public:
         this->menuOptions[6] = "Go Back\n";
 
         this->numOptions = 7;
-
     }
 
     virtual void updateValues(Readings latest, StorageManager *storageManager)
-    {   
-          
-            if (scrollDue){
-                
-                this->updatedRequired = true;
-                currentFocusIndex += this->direction;
-                
-                if(currentFocusIndex >= this->numOptions || currentFocusIndex < 0){
-                    currentFocusIndex = 0;
-                }
-              
-                scrollDue = false;
+    {
+
+        if (scrollDue)
+        {
+
+            this->updatedRequired = true;
+            currentFocusIndex += this->direction;
+
+            if (currentFocusIndex >= this->numOptions || currentFocusIndex < 0)
+            {
+                currentFocusIndex = 0;
             }
+
+            scrollDue = false;
+        }
     }
 
-    virtual void paint(Adafruit_ST7735 *tftDisplay,GFXcanvas16* canvas) override
+    virtual void paint(Adafruit_ST7735 *tftDisplay, GFXcanvas16 *canvas) override
     {
 
         if (!updatedRequired)
@@ -284,8 +293,7 @@ public:
     }
 
 protected:
-
-    String menuOptions[7]; 
+    String menuOptions[7];
 
     int decideColour(int index)
     {
@@ -300,7 +308,6 @@ protected:
     }
 };
 
-
 class Customise : public Screen
 {
 
@@ -312,37 +319,47 @@ public:
         this->humRange.min = -1;
         this->humRange.max = -1;
         this->soilRange.min = -1;
-        this->soilRange.max = -1;        
+        this->soilRange.max = -1;
         this->menuOptions[7] = "\nGo Back\n";
         this->numOptions = 8;
     }
 
-    bool dirtyScreen(MinMax temp, MinMax hum, MinMax soil){
+    bool dirtyScreen(MinMax temp, MinMax hum, MinMax soil)
+    {
 
-        if (temp.min != this->tempRange.min || temp.max != this->tempRange.max )
+        if (temp.min != this->tempRange.min || temp.max != this->tempRange.max)
             return true;
-        if (hum.min != this->humRange.min || hum.max != this->humRange.max )
+        if (hum.min != this->humRange.min || hum.max != this->humRange.max)
             return true;
-        if (soil.min != this->soilRange.min || soil.max != this->soilRange.max )
+        if (soil.min != this->soilRange.min || soil.max != this->soilRange.max)
             return true;
         return false;
     }
 
+    bool oldButtonPress = false;
+
     virtual void updateValues(Readings latest, StorageManager *storageManager)
-    {   
-          Mode* custMode = storageManager->getCustMode();
+    {
+        Mode *custMode = storageManager->getCustMode();
 
-          MinMax newTempRange = custMode->getTempRange();
-          MinMax newHumRange = custMode->getHumidityRange();
-          MinMax newSoilRange = custMode->getSoilRange();
+        MinMax newTempRange = custMode->getTempRange();
+        MinMax newHumRange = custMode->getHumidityRange();
+        MinMax newSoilRange = custMode->getSoilRange();
 
-        if(buttonPress){
+        if (buttonPress != oldButtonPress)
+        {
+            // this is messy AF - needs thought
+            oldButtonPress = buttonPress;
 
-            if(!valueSelected){
+            if (buttonPress)
+            {
+                if (!valueSelected)
+                {
 
-                this->selectedValueIndex = currentFocusIndex;
-                // Only selects value if it is a temp or humidity range 
-                switch(selectedValueIndex){
+                    this->selectedValueIndex = currentFocusIndex;
+                    // Only selects value if it is a temp or humidity range
+                    switch (selectedValueIndex)
+                    {
                     case 0:
                     case 1:
                     case 2:
@@ -360,61 +377,67 @@ public:
                     case 6:
                         // set high soil range
                         storageManager->moistureLevels(2);
-                        break;            
+                        break;
+                    }
                 }
+                else
+                {
+                    this->selectedValueIndex = -1;
+                    this->valueSelected = false;
+                }
+                this->updatedRequired = true;
             }
-            else {
-                this->selectedValueIndex = -1;
-                this->valueSelected = false;
-            }
-            this->updatedRequired = true;
-        }  
+        }
 
-        if (scrollDue){
+        if (scrollDue)
+        {
 
-            if (!valueSelected){  // Cycle options 
+            if (!valueSelected)
+            { // Cycle options
 
                 this->currentFocusIndex += direction;
                 this->updatedRequired = true;
 
-                if(this->currentFocusIndex >= this->numOptions){
+                if (this->currentFocusIndex >= this->numOptions)
+                {
                     this->currentFocusIndex = 0;
                 }
-                
+
                 scrollDue = false;
             }
-            else {
-                
-                // Iterate value logic 
-                switch(selectedValueIndex){
-                    case 0:
-                        newTempRange.min += this->direction;
-                        break;
-                    case 1:
-                        newTempRange.max += this->direction;
-                        break;
-                    case 2:
-                        newHumRange.min += this->direction;
-                        break;
-                    case 3:
-                        newHumRange.max += this->direction;        
-                        break;         
-                }
-                storageManager->setCustEnviro(newTempRange,newHumRange);
-            }
+            else
+            {
 
+                // Iterate value logic
+                switch (selectedValueIndex)
+                {
+                case 0:
+                    newTempRange.min += this->direction;
+                    break;
+                case 1:
+                    newTempRange.max += this->direction;
+                    break;
+                case 2:
+                    newHumRange.min += this->direction;
+                    break;
+                case 3:
+                    newHumRange.max += this->direction;
+                    break;
+                }
+                storageManager->setCustEnviro(newTempRange, newHumRange);
+            }
         }
 
-        if(dirtyScreen(newTempRange,newHumRange,newSoilRange)){
+        if (dirtyScreen(newTempRange, newHumRange, newSoilRange))
+        {
             updatedRequired = true;
             this->tempRange = newTempRange;
             this->humRange = newHumRange;
             this->soilRange = newSoilRange;
-        }  
-    
+        }
 
         this->menuOptions[0] = String(tempRange.min);
-        this->menuOptions[1] = String(tempRange.max); 
+        this->menuOptions[1] = String(tempRange.max);
         this->menuOptions[2] = String(humRange.min);
         this->menuOptions[3] = String(humRange.max);
 
@@ -422,20 +445,21 @@ public:
         this->menuOptions[5] = "Med";
         this->menuOptions[6] = "High\n";
 
-        if (soilRange.max < 30){
+        if (soilRange.max < 30)
+        {
             this->menuOptions[4] = "*Low*";
         }
-        else if (soilRange.max >= 30 && soilRange.max <= 60){
+        else if (soilRange.max >= 30 && soilRange.max <= 60)
+        {
             this->menuOptions[5] = "*Med*";
         }
-        else if (soilRange.max > 60){
+        else if (soilRange.max > 60)
+        {
             this->menuOptions[6] = "*High*\n";
         }
+    }
 
-}
-
-
-    virtual void paint(Adafruit_ST7735 *tftDisplay,GFXcanvas16* canvas) override
+    virtual void paint(Adafruit_ST7735 *tftDisplay, GFXcanvas16 *canvas) override
     {
 
         if (!updatedRequired)
@@ -453,11 +477,11 @@ public:
         canvas->println("--------------------");
         canvas->println("Temperature Range:");
         canvas->println("--------------------");
-        
+
         canvas->setTextColor(decideColour(0));
         canvas->print(this->menuOptions[0]);
         canvas->setTextColor(ST77XX_WHITE);
-        
+
         canvas->print(" - ");
         canvas->setTextColor(decideColour(1));
         canvas->print(this->menuOptions[1]);
@@ -465,10 +489,10 @@ public:
         canvas->println("  C");
 
         canvas->println("--------------------");
-        
+
         canvas->println("Humidity Range:");
         canvas->println("--------------------");
-        
+
         canvas->setTextColor(decideColour(2));
         canvas->print(this->menuOptions[2]);
         canvas->setTextColor(ST77XX_WHITE);
@@ -477,13 +501,13 @@ public:
         canvas->print(this->menuOptions[3]);
         canvas->setTextColor(ST77XX_WHITE);
         canvas->println("  %");
-        
+
         canvas->setTextSize(1);
 
         canvas->println("--------------------");
         canvas->println("Moisture Range: ");
         canvas->println("--------------------");
-        
+
         canvas->setTextColor(decideColour(4));
         canvas->print(this->menuOptions[4]);
         canvas->setTextColor(ST77XX_WHITE);
@@ -493,7 +517,7 @@ public:
         canvas->setTextColor(ST77XX_WHITE);
         canvas->print(" - ");
         canvas->setTextColor(decideColour(6));
-        canvas->print(this->menuOptions[6]);        
+        canvas->print(this->menuOptions[6]);
         canvas->setTextColor(decideColour(7));
         canvas->print(this->menuOptions[7]);
 
@@ -502,16 +526,17 @@ public:
     }
 
 protected:
-    String menuOptions[8]; 
+    String menuOptions[8];
     MinMax tempRange;
     MinMax humRange;
-    MinMax soilRange; 
+    MinMax soilRange;
     bool valueSelected = false;
     int selectedValueIndex = -1;
 
     int decideColour(int index)
     {
-        if(valueSelected){
+        if (valueSelected)
+        {
             if (index == selectedValueIndex)
             {
                 return ST7735_ORANGE;

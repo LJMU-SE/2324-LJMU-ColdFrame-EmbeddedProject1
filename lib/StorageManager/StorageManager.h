@@ -43,10 +43,27 @@ public:
                 this->currentIndex = 0;
                 this->storageFull = true;
             }
-            this->readings[this->currentIndex] = this->lastRead;
-            updateMinMax();
-            this->currentIndex++;
+
+            if(validReadings()){
+                this->readings[this->currentIndex] = this->lastRead;
+                updateMinMax();
+                this->currentIndex++;
+            }
+
         }
+    }
+
+    bool validReadings(){
+
+        // Checks for error state readings, mainly due to loose wiring 
+        if (this->lastRead.temp > 500){
+            return false;
+        }
+
+        if (this->lastRead.hum > 500){
+            return false;
+        }
+        return true;
     }
 
     void storeLastRead(Readings latest){
