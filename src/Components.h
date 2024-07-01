@@ -88,7 +88,10 @@ public:
     }
 
     int getMoisturePercent()
-    {
+    {   
+        if (this->moisturePercent > 100){
+            return 0;
+        }
         return this->moisturePercent;
     }
 
@@ -138,10 +141,16 @@ public:
 
     int getTemp()
     {
+        if (abs(this->currentTemp) > 100){
+            return 0;
+        }
         return this->currentTemp;
     }
     int getHumidity()
     {
+        if (abs(this->currentHumidity) > 100){
+            return 0;
+        }
         return this->currentHumidity;
     }
 

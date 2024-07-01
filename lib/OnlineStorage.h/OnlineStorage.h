@@ -11,23 +11,18 @@ class OnlineStorage {
 public:
 
     OnlineStorage(char* _ssid, char* _password){
-
         this->ssid = _ssid;
         this->password = _password;
         connect();
     }
 
-    void tick(Readings latest,Mode* currentMode){
+
+    void tick(StorageManager* storageManager,Mode* currentMode){
 
         unsigned long currentMillis = millis();
 
-        // Sends initial readings on start up
-        if (numSends < 1)
-            sendData(latest,currentMode);
-           
-
         if (currentMillis - lastSent >= delayTime){
-            sendData(latest,currentMode);
+            sendData(storageManager->getAverages(),currentMode);
             lastSent = currentMillis;
         }
 
@@ -60,7 +55,7 @@ private:
         http.begin(this->serverAdress);
         http.addHeader("Content-Type", "application/json");
         int response = http.POST(jsonData);
-        numSends += 1;
+       
 
         String responseString = http.getString();
 
@@ -70,7 +65,7 @@ private:
     }
 
     void connect(){
-        
+        // Connects to wifi and sends initial dummy values to server
         WiFi.begin(this->ssid, this->password);
         Serial.println("\nConnecting");
 
@@ -88,9 +83,8 @@ private:
 char* ssid;
 char* password;
 char* serverAdress = "https://api.ljmu.dev/cold-frame/push-latest";
-long delayTime = 300000;
+long delayTime = 270000;
 unsigned long lastSent = 0;
-int numSends = 0;
 
 
 };

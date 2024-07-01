@@ -46,13 +46,12 @@ unsigned long readingsLastChange = 0;
 
 void setup()
 {
-
   Serial.begin(115200);
 
   // Initialise display with a reference to encoder to drive menu changes
   display = new DisplayScreen(&numericalControl);
 
-  onlineStorage = new OnlineStorage("espWifi","ljmu1111");
+  onlineStorage = new OnlineStorage("TravelLab","Techno25?");
 }
 
 void loop()
@@ -79,7 +78,7 @@ void loop()
     readings.envState = stateToString(environmentState);
     readings.soilState = stateToString(soilState);
 
-    onlineStorage->tick(readings,currentMode);
+    onlineStorage->tick(&storageManager,currentMode);
 
     readingsLastChange = currentMillis;
 

@@ -6,7 +6,7 @@
 const int ELEMENT_COUNT_MAX = 60 * 24;
 
 unsigned long storageLastChange = 0;
-const long STORAGE_DELAY = 60000; // this is regestering as two minutes for some reason??????
+const long STORAGE_DELAY = 6000; 
 
 // Keeps track of debug values
 struct Readings{
@@ -90,6 +90,10 @@ public:
         return this->modeManager->custMode();
     }
 
+    Readings getLastRead(){
+        return lastRead;
+    }
+
     void setCustEnviro(MinMax newTempRange,MinMax newHumRange){
         modeManager->setNewEnviroValues(newTempRange,newHumRange);
     }
@@ -146,6 +150,32 @@ public:
         }
         return modeToReturn;
     }
+
+    Readings getAverages(){
+
+        // Gets average values from last 5 minutes
+        Readings averages;
+        int count = 5;
+
+        if (currentIndex < 5){
+            count = currentIndex;
+        }
+
+        for (int i = 0; i < count; i++){
+            averages.hum += readings[currentIndex - i].hum;
+            averages.temp += readings[currentIndex - i].temp;
+            averages.moist += readings[currentIndex - i].moist;
+        }
+        
+        // change in future
+        averages.hum /= count;
+        averages.temp /= count;
+        averages.moist /= count;
+        averages.envState = "OK";
+        averages.soilState = "OK";
+
+        return averages;
+    }
     
 private:
 Readings readings[ELEMENT_COUNT_MAX];
@@ -156,6 +186,9 @@ uint8_t currentIndex;
 boolean storageFull;
 boolean initialised;
 ModeManager* modeManager;
+
+    
+
 
     void updateMinMax(){
 
