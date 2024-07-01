@@ -78,7 +78,7 @@ void loop()
     readings.envState = stateToString(environmentState);
     readings.soilState = stateToString(soilState);
 
-    onlineStorage->tick(&storageManager,currentMode);
+    onlineStorage->tick(readings,currentMode);
 
     readingsLastChange = currentMillis;
 
