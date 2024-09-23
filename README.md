@@ -6,7 +6,7 @@
 
 The aim of this project is to develop an embedded system for operating as a garden cold frame monitoring system.
 
-Main is located in src/ , and all custom classes are located in /lib
+Main is located in /src, and all custom classes are located in /lib
 
 ## Hardware
 
