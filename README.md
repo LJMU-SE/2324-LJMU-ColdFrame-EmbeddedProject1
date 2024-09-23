@@ -6,6 +6,8 @@
 
 The aim of this project is to develop an embedded system for operating as a garden cold frame monitoring system.
 
+Main is located in src/ , and all custom classes are located in /lib
+
 ## Hardware
 
 The system is developed using the **ESP-32 microcontroller**. The user interface is facilitated through an **Adafruit TFT display**, which provides real-time feedback on the current environment and system status.
